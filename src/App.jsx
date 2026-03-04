@@ -3,7 +3,7 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceL
 
 // ── FRED API Series IDs ──────────────────────────────────────────
 const FRED_BASE = "https://api.stlouisfed.org/fred/series/observations";
-const FRED_KEY  = ""; // FRED allows anonymous calls for some series via file_type=json
+const FRED_KEY  = "cd484126bef5ea19bc705b7fcbdcfcbb";
 
 // HY Spread: BAMLH0A0HYM2  |  IG (Investment Grade) Spread: BAMLC0A0CM
 // We use these as proxy for CLO health since CLO AAA is not on FRED public API
@@ -142,7 +142,7 @@ export default function App() {
       const results = {};
       const charts  = {};
       for (const [key, s] of Object.entries(SERIES)) {
-        const url = `${FRED_BASE}?series_id=${s.id}&sort_order=desc&limit=90&file_type=json&api_key=`;
+        const url = `${FRED_BASE}?series_id=${s.id}&sort_order=desc&limit=90&file_type=json&api_key=${FRED_KEY}`;
         const res  = await fetch(url);
         if (!res.ok) throw new Error(`FRED ${s.id}: ${res.status}`);
         const json = await res.json();
