@@ -26,5 +26,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add public/fred-data.json
-          git diff --staged --quiet || git commit -m "Update FRED data [skip ci]"
+          git diff --staged --quiet || git commit -m "Update FRED data"
           git push
