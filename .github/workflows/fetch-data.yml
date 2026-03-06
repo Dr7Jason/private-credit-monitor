@@ -5,6 +5,9 @@ on:
     - cron: '0 */6 * * *'  # 6시간마다
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   fetch-data:
     runs-on: ubuntu-latest
