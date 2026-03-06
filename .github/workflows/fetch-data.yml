@@ -1,0 +1,27 @@
+name: Fetch FRED Data
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # 6시간마다
+  workflow_dispatch:
+
+jobs:
+  fetch-data:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch FRED Data
+        run: |
+          HY=$(curl -s "https://api.stlouisfed.org/fred/series/observations?series_id=BAMLH0A0HYM2&sort_order=desc&limit=90&file_type=json&api_key=cd484126bef5ea19bc705b7fcbdcfcbb")
+          IG=$(curl -s "https://api.stlouisfed.org/fred/series/observations?series_id=BAMLC0A0CM&sort_order=desc&limit=90&file_type=json&api_key=cd484126bef5ea19bc705b7fcbdcfcbb")
+          UPDATED=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          echo "{\"hy\": $HY, \"ig\": $IG, \"updated\": \"$UPDATED\"}" > public/fred-data.json
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/fred-data.json
+          git diff --staged --quiet || git commit -m "Update FRED data [skip ci]"
+          git push

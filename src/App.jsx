@@ -134,28 +134,26 @@ export default function App() {
     return manualStatus[id] ?? "green";
   };
 
-  // FRED fetch
+  // FRED fetch (로컬 JSON — GitHub Actions가 6시간마다 갱신)
   const fetchFRED = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
+      const res  = await fetch(`${import.meta.env.BASE_URL}fred-data.json?t=${Date.now()}`);
+      if (!res.ok) throw new Error(`데이터 로드 실패: ${res.status}`);
+      const data = await res.json();
       const results = {};
       const charts  = {};
-      for (const [key, s] of Object.entries(SERIES)) {
-        const url = `${FRED_BASE}?series_id=${s.id}&sort_order=desc&limit=90&file_type=json&api_key=${FRED_KEY}`;
-        const res  = await fetch(url);
-        if (!res.ok) throw new Error(`FRED ${s.id}: ${res.status}`);
-        const json = await res.json();
-        const obs  = (json.observations ?? [])
+      for (const [key] of Object.entries(SERIES)) {
+        const obs = (data[key]?.observations ?? [])
           .filter(o => o.value !== ".")
-          .map(o => ({ date: o.date, value: parseFloat(o.value) }))
-          .reverse();
+          .map(o => ({ date: o.date, value: parseFloat(o.value) }));
         if (obs.length) results[key] = obs[obs.length - 1].value;
-        charts[key] = obs.map(o => ({ date: o.date.slice(5), value: o.value })); // MM-DD
+        charts[key] = obs.map(o => ({ date: o.date.slice(5), value: o.value }));
       }
       setLatest(results);
       setChartData(charts);
-      setLastFetch(new Date().toLocaleTimeString("ko-KR"));
+      setLastFetch(data.updated ? new Date(data.updated).toLocaleString("ko-KR") : new Date().toLocaleTimeString("ko-KR"));
     } catch (e) {
       setError(e.message);
     } finally {
