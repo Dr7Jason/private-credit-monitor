@@ -24,9 +24,9 @@ const EVENTS = [
 const SIGNALS = [
   { id:"hy",    name:"HY Spread",             cat:"credit", critical:true,  note:"5% 돌파 시 🔴 경보 — 지금 자동 반영" },
   { id:"ig",    name:"IG (BBB) Spread",        cat:"credit", critical:false, note:"1.8% 돌파 시 🔴 경보 — 자동 반영" },
-  { id:"bcred", name:"Blackstone BCRED",       cat:"fund",   critical:false, note:"임직원 $4억 투입으로 방어 중" },
-  { id:"obdc",  name:"Blue Owl OBDC II",       cat:"fund",   critical:false, note:"환매 영구 종료 — 청산 모드" },
-  { id:"otic",  name:"Blue Owl OTIC",          cat:"fund",   critical:false, note:"환매율 NAV 15%" },
+  { id:"bcred", name:"Blackstone BCRED",       cat:"fund",   critical:false, note:"Q1 $37억 인출·7.9% 초과 허용 (임직원 $4억 방어 중)" },
+  { id:"obdc",  name:"Blue Owl OBDC II",       cat:"fund",   critical:false, note:"환매 영구 종료 — 포트폴리오 34% 매각·NAV 30% 배분 예정" },
+  { id:"otic",  name:"Blue Owl OTIC",          cat:"fund",   critical:false, note:"환매율 NAV 17% 허용 (한도 3배 초과) — $4억 자산 매각 중" },
   { id:"ares",  name:"Ares BDC 환매",          cat:"fund",   critical:true,  note:"3번째 펀드 — 핵심 감시 대상" },
   { id:"apollo",name:"Apollo BDC 환매",        cat:"fund",   critical:true,  note:"연쇄 전염 여부 판단 지표" },
   { id:"pe",    name:"PE Exit 딜 속도",        cat:"market", critical:false, note:"사모펀드 출구 전략 둔화" },
@@ -34,7 +34,7 @@ const SIGNALS = [
 ];
 
 const INIT_STATUS = {
-  bcred:"yellow", obdc:"red", otic:"yellow",
+  bcred:"yellow", obdc:"red", otic:"red",
   ares:"green", apollo:"green", pe:"yellow", oil:"yellow",
 };
 
